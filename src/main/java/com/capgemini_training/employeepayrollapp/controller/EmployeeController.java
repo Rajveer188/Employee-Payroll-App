@@ -1,5 +1,6 @@
 package com.capgemini_training.employeepayrollapp.controller;
 
+import com.capgemini_training.employeepayrollapp.dto.EmployeeDTO;
 import com.capgemini_training.employeepayrollapp.model.EmployeeEntity;
 import com.capgemini_training.employeepayrollapp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,24 +23,24 @@ public class EmployeeController {
 
     //get methods
     @GetMapping("/get/{id}")
-    public EmployeeEntity getEmployee(@PathVariable int id){
+    public EmployeeDTO getEmployee(@PathVariable int id){
         return employeeService.getEmployeeById(id);
     }
     @GetMapping("/")
-    public List<EmployeeEntity> getAllEmployees(){
+    public List<EmployeeDTO> getAllEmployees(){
         return employeeService.getAllEmployees();
     }
 
     //post method
     @PostMapping("/post")
-    public EmployeeEntity addEmployee(@RequestBody EmployeeEntity employee){
+    public EmployeeDTO addEmployee(@RequestBody EmployeeEntity employee){
         return employeeService.addEmployee(employee);
     }
 
     //put method
     @PutMapping("/put/{id}")
-    public EmployeeEntity updateEmployee(@PathVariable int id, @RequestBody EmployeeEntity employee){
-        return employeeService.udpdateEmployee(id, employee);
+    public EmployeeDTO updateEmployee(@PathVariable int id, @RequestBody EmployeeDTO employee){
+        return employeeService.updateEmployee(id, employee);
     }
 
     //delete method
