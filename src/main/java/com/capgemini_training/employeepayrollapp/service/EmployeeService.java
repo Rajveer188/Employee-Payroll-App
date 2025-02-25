@@ -3,6 +3,7 @@ package com.capgemini_training.employeepayrollapp.service;
 import com.capgemini_training.employeepayrollapp.dto.EmployeeDTO;
 import com.capgemini_training.employeepayrollapp.model.EmployeeEntity;
 import com.capgemini_training.employeepayrollapp.repository.EmployeeRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +14,24 @@ import java.util.NoSuchElementException;
 
 @Service
 public class EmployeeService {
-    @Autowired
+    //attribute
     private EmployeeRepository employeeRepository;
+    private ModelMapper modelMapper;
+
+    //constructor
+    @Autowired
+    public EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper){
+        this.employeeRepository = employeeRepository;
+        this.modelMapper = modelMapper;
+    }
 
     //method to add employee
-    public EmployeeDTO addEmployee(EmployeeEntity employee){
-        EmployeeEntity employeeEntity = employeeRepository.save(employee);
+    public EmployeeDTO addEmployee(EmployeeDTO employeeDTO){
+        EmployeeEntity employeeEntity = modelMapper.map(employeeDTO, EmployeeEntity.class);
+        //save entity in the database
+        EmployeeEntity savedEntity = employeeRepository.save(employeeEntity);
         //convert entity to dto and return
-        return new EmployeeDTO(employeeEntity);
+        return modelMapper.map(employeeEntity, EmployeeDTO.class);
     }
     //method to get employee by id
     public EmployeeDTO getEmployeeById(int id){
@@ -29,7 +40,7 @@ public class EmployeeService {
         if(employeeEntity == null){
             return null;
         }
-        return new EmployeeDTO(employeeEntity);
+        return modelMapper.map(employeeEntity, EmployeeDTO.class);
     }
     //method to update employee
     public EmployeeDTO updateEmployee(int id, EmployeeDTO employeeDTO) {
@@ -49,7 +60,7 @@ public class EmployeeService {
         EmployeeEntity updatedEmployee = employeeRepository.save(employeeEntity);
 
         //convert entity to DTO and return
-        return new EmployeeDTO(updatedEmployee);
+        return modelMapper.map(employeeEntity, EmployeeDTO.class);
     }
     //method to delete employee
     public void deleteEmployee(int id){
@@ -65,7 +76,8 @@ public class EmployeeService {
 
         for (EmployeeEntity employee : employees) {
             //entity to dto
-            dtoList.add(new EmployeeDTO(employee));
+            EmployeeDTO dto = modelMapper.map(employee, EmployeeDTO.class);
+            dtoList.add(dto);
         }
         return dtoList;
     }
