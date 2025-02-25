@@ -3,7 +3,9 @@ package com.capgemini_training.employeepayrollapp.controller;
 import com.capgemini_training.employeepayrollapp.dto.EmployeeDTO;
 import com.capgemini_training.employeepayrollapp.model.EmployeeEntity;
 import com.capgemini_training.employeepayrollapp.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 //controller for employee payroll service
 @RestController
 @RequestMapping("/employeeservice")
+@Slf4j
 public class EmployeeController {
 
     EmployeeService employeeService;
@@ -23,30 +26,43 @@ public class EmployeeController {
 
     //get methods
     @GetMapping("/get/{id}")
-    public EmployeeDTO getEmployee(@PathVariable int id){
-        return employeeService.getEmployeeById(id);
+    public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable int id){
+        log.info("receive api request for get employee {} details", id);
+        EmployeeDTO employeeDTO = employeeService.getEmployeeById(id);
+        //return response
+        return ResponseEntity.ok(employeeDTO);
     }
     @GetMapping("/")
-    public List<EmployeeDTO> getAllEmployees(){
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees(){
+        log.info("receive api request to get all employees details");
+        List<EmployeeDTO> employeeDTOList = employeeService.getAllEmployees();
+        //return response
+        return ResponseEntity.ok(employeeDTOList);
     }
     //post method
     @PostMapping("/post")
-    public EmployeeDTO addEmployee(@RequestBody EmployeeDTO employee){
-        return employeeService.addEmployee(employee);
+    public ResponseEntity<EmployeeDTO> addEmployee(@RequestBody EmployeeDTO employee){
+        log.info("receive api request to post a new employee");
+        EmployeeDTO employeeDTO = employeeService.addEmployee(employee);
+        //return response
+        return ResponseEntity.ok(employeeDTO);
     }
 
     //put method
     @PutMapping("/put/{id}")
-    public EmployeeDTO updateEmployee(@PathVariable int id, @RequestBody EmployeeDTO employee){
-        return employeeService.updateEmployee(id, employee);
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable int id, @RequestBody EmployeeDTO employee){
+        log.info("receive api request for update employee {} details", id);
+        EmployeeDTO employeeDTO = employeeService.updateEmployee(id, employee);
+        //return response
+        return ResponseEntity.ok(employeeDTO);
     }
 
     //delete method
     @DeleteMapping("/delete/{id}")
-    public String deleteEmployee(@PathVariable int id){
+    public ResponseEntity<String> deleteEmployee(@PathVariable int id){
+        log.info("receive api request to delete employee {} details", id);
         employeeService.deleteEmployee(id);
-        return "employee deleted successfully";
+        return ResponseEntity.ok("employee deleted successfully");
     }
 }
 

@@ -3,6 +3,7 @@ package com.capgemini_training.employeepayrollapp.service;
 import com.capgemini_training.employeepayrollapp.dto.EmployeeDTO;
 import com.capgemini_training.employeepayrollapp.model.EmployeeEntity;
 import com.capgemini_training.employeepayrollapp.repository.EmployeeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.NoSuchElementException;
 
 
 @Service
+@Slf4j
 public class EmployeeService {
     //attribute
     private EmployeeRepository employeeRepository;
@@ -35,6 +37,7 @@ public class EmployeeService {
     }
     //method to get employee by id
     public EmployeeDTO getEmployeeById(int id){
+        log.info("retrieving details of employee - {}",id);
         EmployeeEntity employeeEntity = employeeRepository.findById(id).orElse(null);
         //convert entity to dto and return
         if(employeeEntity == null){
@@ -44,6 +47,7 @@ public class EmployeeService {
     }
     //method to update employee
     public EmployeeDTO updateEmployee(int id, EmployeeDTO employeeDTO) {
+        log.info("updating details of employee - {}",id);
         //get existing employee
         EmployeeEntity employeeEntity = employeeRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException ("Employee not found with id: " + id));
@@ -64,6 +68,7 @@ public class EmployeeService {
     }
     //method to delete employee
     public void deleteEmployee(int id){
+        log.info("deleting employee with id - {}",id);
         if (!employeeRepository.existsById(id)) {
             throw new NoSuchElementException("Employee not found with id: " + id);
         }
@@ -71,6 +76,7 @@ public class EmployeeService {
     }
     //method to show all employee
     public List<EmployeeDTO> getAllEmployees(){
+        log.info("retrieving all employees details");
         List<EmployeeEntity> employees = employeeRepository.findAll();
         List<EmployeeDTO> dtoList = new ArrayList<>();
 
