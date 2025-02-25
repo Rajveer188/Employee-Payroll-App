@@ -10,7 +10,7 @@ public class EmployeePayrollAppApplication {
 
 	public static void main(String[] args) {
 
-		log.info("Starting Employee Payroll Application");
+		log.info("*********Starting Employee Payroll Application***********");
 		SpringApplication.run(EmployeePayrollAppApplication.class, args);
 	}
 

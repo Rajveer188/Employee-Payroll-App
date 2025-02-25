@@ -29,6 +29,7 @@ public class EmployeeService {
 
     //method to add employee
     public EmployeeDTO addEmployee(EmployeeDTO employeeDTO){
+        log.info("Add new employee");
         EmployeeEntity employeeEntity = modelMapper.map(employeeDTO, EmployeeEntity.class);
         //save entity in the database
         EmployeeEntity savedEntity = employeeRepository.save(employeeEntity);
