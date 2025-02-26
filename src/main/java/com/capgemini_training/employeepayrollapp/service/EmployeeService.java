@@ -1,6 +1,7 @@
 package com.capgemini_training.employeepayrollapp.service;
 
 import com.capgemini_training.employeepayrollapp.dto.EmployeeDTO;
+import com.capgemini_training.employeepayrollapp.exception.EmployeeNotFoundException;
 import com.capgemini_training.employeepayrollapp.model.EmployeeEntity;
 import com.capgemini_training.employeepayrollapp.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -39,11 +40,9 @@ public class EmployeeService {
     //method to get employee by id
     public EmployeeDTO getEmployeeById(int id){
         log.info("retrieving details of employee - {}",id);
-        EmployeeEntity employeeEntity = employeeRepository.findById(id).orElse(null);
+        EmployeeEntity employeeEntity = employeeRepository.findById(id).orElseThrow(() ->
+                new EmployeeNotFoundException("Employee not found"));
         //convert entity to dto and return
-        if(employeeEntity == null){
-            return null;
-        }
         return modelMapper.map(employeeEntity, EmployeeDTO.class);
     }
     //method to update employee

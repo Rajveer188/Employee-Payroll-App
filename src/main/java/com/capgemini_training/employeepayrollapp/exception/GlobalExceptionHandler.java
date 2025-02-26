@@ -18,4 +18,9 @@ public class GlobalExceptionHandler {
         assert fieldError != null;
         return new ResponseEntity<>(fieldError.getDefaultMessage(), HttpStatus.BAD_REQUEST);
     }
+    //method to handle employee not found exception
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseEntity<String> employeeExceptionHandle(EmployeeNotFoundException exception){
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
