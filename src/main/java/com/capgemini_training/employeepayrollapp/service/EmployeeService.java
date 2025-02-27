@@ -33,6 +33,7 @@ public class EmployeeService {
         log.info("Add new employee");
         EmployeeEntity employeeEntity = modelMapper.map(employeeDTO, EmployeeEntity.class);
         //save entity in the database
+        log.debug("Employee Data - "  + employeeDTO.toString());
         EmployeeEntity savedEntity = employeeRepository.save(employeeEntity);
         //convert entity to dto and return
         return modelMapper.map(savedEntity, EmployeeDTO.class);
@@ -41,7 +42,7 @@ public class EmployeeService {
     public EmployeeDTO getEmployeeById(int id){
         log.info("retrieving details of employee - {}",id);
         EmployeeEntity employeeEntity = employeeRepository.findById(id).orElseThrow(() ->
-                new EmployeeNotFoundException("Employee not found"));
+                new EmployeeNotFoundException("Employee with id "+id+" not found"));
         //convert entity to dto and return
         return modelMapper.map(employeeEntity, EmployeeDTO.class);
     }
@@ -50,14 +51,19 @@ public class EmployeeService {
         log.info("updating details of employee - {}",id);
         //get existing employee
         EmployeeEntity employeeEntity = employeeRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException ("Employee not found with id: " + id));
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with id "+id+" not found"));
 
-        // Update fields only if new values are provided
-        if (employeeDTO.getName() != null) {
-            employeeEntity.setName(employeeDTO.getName());
-        }
-        if (employeeDTO.getSalary() > 0) {
-            employeeEntity.setSalary(employeeDTO.getSalary());
+        // Update
+        employeeEntity.setName(employeeDTO.getName());
+        employeeEntity.setSalary(employeeDTO.getSalary());
+        employeeEntity.setGender(employeeDTO.getGender());
+        employeeEntity.setStartDate(employeeDTO.getStartDate());
+        employeeEntity.setProfilePic(employeeDTO.getProfilePic());
+        employeeEntity.setNote(employeeDTO.getNote());
+        List<String> newDepartments = employeeDTO.getDepartments();
+        if (newDepartments != null) {
+            employeeEntity.getDepartments().clear();
+            employeeEntity.getDepartments().addAll(newDepartments);
         }
 
         //save the updated entity
