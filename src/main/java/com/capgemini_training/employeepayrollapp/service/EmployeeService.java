@@ -35,7 +35,7 @@ public class EmployeeService {
         //save entity in the database
         EmployeeEntity savedEntity = employeeRepository.save(employeeEntity);
         //convert entity to dto and return
-        return modelMapper.map(employeeEntity, EmployeeDTO.class);
+        return modelMapper.map(savedEntity, EmployeeDTO.class);
     }
     //method to get employee by id
     public EmployeeDTO getEmployeeById(int id){

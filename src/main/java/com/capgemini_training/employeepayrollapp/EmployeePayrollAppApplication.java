@@ -8,10 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Slf4j
 public class EmployeePayrollAppApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
 
 		log.info("*********Starting Employee Payroll Application***********");
 		SpringApplication.run(EmployeePayrollAppApplication.class, args);
 	}
-
 }
