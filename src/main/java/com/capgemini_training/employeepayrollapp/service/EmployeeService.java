@@ -64,7 +64,7 @@ public class EmployeeService {
         EmployeeEntity updatedEmployee = employeeRepository.save(employeeEntity);
 
         //convert entity to DTO and return
-        return modelMapper.map(employeeEntity, EmployeeDTO.class);
+        return modelMapper.map(updatedEmployee, EmployeeDTO.class);
     }
     //method to delete employee
     public void deleteEmployee(int id){
