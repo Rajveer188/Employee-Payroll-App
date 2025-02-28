@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
-public class EmployeeService {
+public class EmployeeService implements IEmployeeService{
     //attribute
     private EmployeeRepository employeeRepository;
     private ModelMapper modelMapper;
@@ -87,6 +88,18 @@ public class EmployeeService {
         List<EmployeeDTO> dtoList = new ArrayList<>();
 
         for (EmployeeEntity employee : employees) {
+            //entity to dto
+            EmployeeDTO dto = modelMapper.map(employee, EmployeeDTO.class);
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+    //service to retrieve employee by department
+    public List<EmployeeDTO> getEmployeeByDepartment(String department){
+        List<EmployeeEntity> employeeEntityList = employeeRepository.findEmployeeByDepartment(department);
+        List<EmployeeDTO> dtoList = new ArrayList<>();
+
+        for (EmployeeEntity employee : employeeEntityList) {
             //entity to dto
             EmployeeDTO dto = modelMapper.map(employee, EmployeeDTO.class);
             dtoList.add(dto);

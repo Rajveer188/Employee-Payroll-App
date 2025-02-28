@@ -6,6 +6,7 @@ import com.capgemini_training.employeepayrollapp.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,6 +65,12 @@ public class EmployeeController {
         log.info("receive api request to delete employee {} details", id);
         employeeService.deleteEmployee(id);
         return ResponseEntity.ok("employee deleted successfully");
+    }
+    @GetMapping("/department/{department}")
+    public ResponseEntity<List<EmployeeDTO>> getEmployeeByDepartment(@PathVariable("department") String department){
+        List<EmployeeDTO> employeeDTOList = null;
+        employeeDTOList = employeeService.getEmployeeByDepartment(department);
+        return ResponseEntity.ok(employeeDTOList);
     }
 }
 
